@@ -21,6 +21,7 @@
 			<artifactId>HikariCP</artifactId>
 			<version>5.0.1</version>
 		</dependency>
+<<<<<<< HEAD
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -40,5 +41,8 @@
 			<version>3.0.0-alpha1</version>
 		</dependency>
 
+=======
+		
+>>>>>>> main
 	</dependencies>
 </project>

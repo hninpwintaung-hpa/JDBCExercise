@@ -17,7 +17,9 @@ public class DBConnection {
 	};
 
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(URL, user, pass);
+		//return DriverManager.getConnection(URL, user, pass);
+		HikariDataSource dataSource = getDataSource();
+		return dataSource.getConnection();
 	}
 
 	public static HikariDataSource getDataSource() {
