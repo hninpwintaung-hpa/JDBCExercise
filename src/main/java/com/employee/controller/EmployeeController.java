@@ -24,14 +24,15 @@ public class EmployeeController {
 
 		// employeeController.addEmployee();
 
-		// employeeController.findAllEmployee();
+		employeeController.findAllEmployee();
 
 		// employeeController.findEmployeeByLastName("Kim");
 
 		// employeeController.updateEmployee();
-		//employeeController.deleteEmployee();
-		
-		employeeController.addEmployeeBatch();
+
+		// employeeController.deleteEmployee();
+
+		// employeeController.addEmployeeBatch();
 	}
 
 	public void addEmployeeBatch() {
@@ -55,12 +56,11 @@ public class EmployeeController {
 		employeesToInsert.add(eve);
 
 		try {
-			
+
 			int[] result = employeeService.addEmployeeBatch(employeesToInsert);
-            System.out.println("Batch insert successful. Rows inserted: " + result.length);
-            
+			System.out.println("Batch insert successful. Rows inserted: " + result.length);
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -95,7 +95,6 @@ public class EmployeeController {
 		try {
 			employeeService.insertEmplyoee(newEmployee);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -121,26 +120,6 @@ public class EmployeeController {
 
 	}
 
-	public void findEmployeeByLastName(String lastName) {
-		List<Employee> result;
-		try {
-			result = employeeService.getEmployeesByLastName(lastName);
-
-			for (Employee employee : result) {
-				System.out.print(employee.getEmployeeId() + ", ");
-				System.out.print(employee.getFirstName() + " ");
-				System.out.print(employee.getLastName() + ", ");
-				System.out.print(employee.getEmail() + ", ");
-				System.out.print(employee.getHireDate() + ", ");
-				System.out.println();
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public void updateEmployee() {
 
 		Scanner scanner = new Scanner(System.in);
@@ -151,7 +130,7 @@ public class EmployeeController {
 		Employee existingEmployee;
 		try {
 			existingEmployee = employeeService.getEmployeeById(employeeId);
-			
+
 			if (existingEmployee == null) {
 				System.out.println("Employee not found.");
 			} else {
@@ -176,11 +155,30 @@ public class EmployeeController {
 				System.out.println("Employee information updated successfully.");
 				scanner.close();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+	}
+
+	public void findEmployeeByLastName(String lastName) {
+		List<Employee> result;
+		try {
+			result = employeeService.getEmployeesByLastName(lastName);
+
+			for (Employee employee : result) {
+				System.out.print(employee.getEmployeeId() + ", ");
+				System.out.print(employee.getFirstName() + " ");
+				System.out.print(employee.getLastName() + ", ");
+				System.out.print(employee.getEmail() + ", ");
+				System.out.print(employee.getHireDate() + ", ");
+				System.out.println();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void deleteEmployee() {
@@ -192,7 +190,7 @@ public class EmployeeController {
 		Employee existingEmployee;
 		try {
 			existingEmployee = employeeService.getEmployeeById(employeeId);
-			
+
 			if (existingEmployee == null) {
 				System.out.println("Employee not found.");
 			} else {
@@ -202,7 +200,17 @@ public class EmployeeController {
 			}
 
 			scanner.close();
-		
+
+			if (existingEmployee == null) {
+				System.out.println("Employee not found.");
+			} else {
+				employeeService.deleteEmployee(employeeId);
+				System.out.println("Employee information deleted successfully.");
+
+			}
+
+			scanner.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

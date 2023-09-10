@@ -6,8 +6,8 @@ import java.util.List;
 import com.employee.model.Employee;
 
 public interface EmployeeService {
-
-	public int[] addEmployeeBatch(List<Employee> employees) throws SQLException;
+	
+	public int[] addEmployeeBatch(List<Employee> employees)throws SQLException;
 
 	public void insertEmplyoee(Employee employee) throws SQLException;
 
