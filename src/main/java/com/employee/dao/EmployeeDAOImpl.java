@@ -20,6 +20,31 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public static String sqlDelete =" delete from employee where employee_id =?";
 
 
+	public int[] addEmployeeBatch(List<Employee> employeesList) {
+		
+		int[] batchResult = null;
+		try (Connection conn = DBConnection.getConnection();
+				PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
+
+            for (Employee employee : employeesList) {
+            	
+                preparedStatement.setInt(1, employee.getEmployeeId());
+				preparedStatement.setString(2, employee.getFirstName());
+                preparedStatement.setString(3, employee.getLastName());
+                preparedStatement.setString(4, employee.getEmail());
+                preparedStatement.setString(5, employee.getHireDate());
+
+                preparedStatement.addBatch(); 
+            }
+
+            batchResult = preparedStatement.executeBatch(); 
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        return batchResult;
+
+	}
 	public void addEmployee(Employee employee) {
 		try (Connection conn = DBConnection.getConnection();
 				PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
@@ -66,7 +91,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public List<Employee> findAllEmployee() {
+		
 		List<Employee> employeesList = new ArrayList<>();
+		
 		try (Connection conn = DBConnection.getConnection();
 				PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectAll)) {
 
