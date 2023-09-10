@@ -37,22 +37,22 @@ public class EmployeeController {
 	public void addEmployeeBatch() {
 		List<Employee> employeesToInsert = new ArrayList<>();
 
-		Employee Alice = new Employee();
-		Alice.setEmployeeId(3);
-		Alice.setFirstName("Alice");
-		Alice.setLastName("Johnson");
-		Alice.setEmail("alice@gmail.com");
-		Alice.setHireDate("2023-06-15");
+		Employee alice = new Employee();
+		alice.setEmployeeId(3);
+		alice.setFirstName("alice");
+		alice.setLastName("Johnson");
+		alice.setEmail("alice@gmail.com");
+		alice.setHireDate("2023-06-15");
 
-		Employee Eve = new Employee();
-		Alice.setEmployeeId(5);
-		Alice.setFirstName("Eve");
-		Alice.setLastName("Smith");
-		Alice.setEmail("eve.smith@example.com");
-		Alice.setHireDate("2022-12-05");
+		Employee eve = new Employee();
+		eve.setEmployeeId(5);
+		eve.setFirstName("Eve");
+		eve.setLastName("Smith");
+		eve.setEmail("eve.smith@example.com");
+		eve.setHireDate("2022-12-05");
 
-		employeesToInsert.add(Alice);
-		employeesToInsert.add(Eve);
+		employeesToInsert.add(alice);
+		employeesToInsert.add(eve);
 
 		try {
 			
