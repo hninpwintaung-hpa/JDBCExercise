@@ -22,16 +22,16 @@ public class EmployeeController {
 		EmployeeService employeeService = new EmployeeServiceImpl();
 		EmployeeController employeeController = new EmployeeController(employeeService);
 
-		 //employeeController.addEmployee();
+		// employeeController.addEmployee();
 
 		employeeController.findAllEmployee();
 
 		// employeeController.findEmployeeByLastName("Kim");
 
 		// employeeController.updateEmployee();
-		//employeeController.deleteEmployee();
-		
-		//employeeController.addEmployeeBatch();
+		// employeeController.deleteEmployee();
+
+		// employeeController.addEmployeeBatch();
 	}
 
 	public void addEmployeeBatch() {
@@ -55,10 +55,10 @@ public class EmployeeController {
 		employeesToInsert.add(Eve);
 
 		try {
-			
+
 			int[] result = employeeService.addEmployeeBatch(employeesToInsert);
-            System.out.println("Batch insert successful. Rows inserted: " + result.length);
-            
+			System.out.println("Batch insert successful. Rows inserted: " + result.length);
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -151,7 +151,7 @@ public class EmployeeController {
 		Employee existingEmployee;
 		try {
 			existingEmployee = employeeService.getEmployeeById(employeeId);
-			
+
 			if (existingEmployee == null) {
 				System.out.println("Employee not found.");
 			} else {
@@ -176,11 +176,11 @@ public class EmployeeController {
 				System.out.println("Employee information updated successfully.");
 				scanner.close();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void deleteEmployee() {
@@ -192,7 +192,7 @@ public class EmployeeController {
 		Employee existingEmployee;
 		try {
 			existingEmployee = employeeService.getEmployeeById(employeeId);
-			
+
 			if (existingEmployee == null) {
 				System.out.println("Employee not found.");
 			} else {
@@ -202,7 +202,7 @@ public class EmployeeController {
 			}
 
 			scanner.close();
-		
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
