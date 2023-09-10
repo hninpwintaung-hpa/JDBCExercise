@@ -22,16 +22,16 @@ public class EmployeeController {
 		EmployeeService employeeService = new EmployeeServiceImpl();
 		EmployeeController employeeController = new EmployeeController(employeeService);
 
-		// employeeController.addEmployee();
+		 //employeeController.addEmployee();
 
-		// employeeController.findAllEmployee();
+		employeeController.findAllEmployee();
 
 		// employeeController.findEmployeeByLastName("Kim");
 
 		// employeeController.updateEmployee();
 		//employeeController.deleteEmployee();
 		
-		employeeController.addEmployeeBatch();
+		//employeeController.addEmployeeBatch();
 	}
 
 	public void addEmployeeBatch() {
