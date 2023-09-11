@@ -12,13 +12,13 @@ import com.employee.model.Employee;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
-	public static Connection conn;
-	public static String sqlInsert = "insert into employee(employee_id,first_name,last_name,email,hire_date) values(?,?,?,?,?)";
-	public static String sqlSelectAll = "select * from employee";
-	public static String sqlSearchByName = "select * from employee where last_name = ?";
-	public static String sqlSearchById = "select * from employee where employee_id = ?";
-	public static String sqlUpdate = "update employee set first_name=?, last_name =? , email =?, hire_date =? where employee_id =? ";
-	public static String sqlDelete = " delete from employee where employee_id =?";
+	private static Connection conn;
+	private static String sqlInsert = "insert into employee(employee_id,first_name,last_name,email,hire_date) values(?,?,?,?,?)";
+	private static String sqlSelectAll = "select * from employee";
+	private static String sqlSearchByName = "select * from employee where last_name = ?";
+	private static String sqlSearchById = "select * from employee where employee_id = ?";
+	private static String sqlUpdate = "update employee set first_name=?, last_name =? , email =?, hire_date =? where employee_id =? ";
+	private static String sqlDelete = " delete from employee where employee_id =?";
 
 	static {
 		try {
