@@ -29,12 +29,21 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public static String sqlSelectCount = "select COUNT(*) from employee";
 	public static String sqlCalculateAvgHiredate = "Select DATEADD(DAY, AVG(DATEDIFF(DAY, '19000101', hire_date)), '19000101') from employee";
 	public static String sqlUpdateEmployeeSalary = "update employee set salary = ? where employee_id =?";
+	private static Connection conn;
+	
+	static {
+		try {
+			conn = DBConnection.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public int[] addEmployeeBatch(List<Employee> employeesList) {
 
 		int[] batchResult = null;
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
 
 			for (Employee employee : employeesList) {
 
@@ -58,8 +67,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public void addEmployee(Employee employee) {
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
 
 			preparedStatement.setInt(1, employee.getEmployeeId());
 			preparedStatement.setString(2, employee.getFirstName());
@@ -75,8 +83,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public void updateEmployee(int empId, Employee employee) {
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlUpdate)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlUpdate)) {
 
 			preparedStatement.setString(1, employee.getFirstName());
 			preparedStatement.setString(2, employee.getLastName());
@@ -93,8 +100,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public void deleteEmployee(int empId) {
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlDelete)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlDelete)) {
 
 			preparedStatement.setInt(1, empId);
 			preparedStatement.executeUpdate();
@@ -108,8 +114,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		List<Employee> employeesList = new ArrayList<>();
 
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectAll)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectAll)) {
 
 			ResultSet result = preparedStatement.executeQuery();
 
@@ -133,8 +138,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public List<Employee> getEmployeesByLastName(String lastName) {
 
 		List<Employee> employeesList = new ArrayList<>();
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchByName)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchByName)) {
 
 			preparedStatement.setString(1, lastName);
 			ResultSet result = preparedStatement.executeQuery();
@@ -234,8 +238,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	public Employee getEmployeeById(int id) {
 		Employee employee = new Employee();
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchById)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchById)) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet result = preparedStatement.executeQuery();
