@@ -24,7 +24,7 @@ public class EmployeeController {
 
 		// employeeController.addEmployee();
 
-		employeeController.findAllEmployee();
+		// employeeController.findAllEmployee();
 
 		// employeeController.findEmployeeByLastName("Kim");
 
@@ -33,6 +33,21 @@ public class EmployeeController {
 		// employeeController.deleteEmployee();
 
 		// employeeController.addEmployeeBatch();
+
+		// employeeController.findEmployeeByFirstName("Ev");
+
+		// employeeController.getAllEmployeeByAscHireDate();
+
+		// employeeController.getEmployeeByHireDate("DESC");
+
+		// employeeController.getNumberOfTotalEmployee();
+
+		///employeeController.getAllEmployeeAvgHireDate();
+		
+		//employeeController.updateEmployeesSalaryByBatch();
+		 //employeeController.employeeBackup();
+		
+		employeeController.restoreEmployee();
 	}
 
 	public void addEmployeeBatch() {
@@ -181,6 +196,76 @@ public class EmployeeController {
 
 	}
 
+	public void findEmployeeByFirstName(String firstName) {
+		List<Employee> result;
+		try {
+			result = employeeService.getEmployeesByFirstName(firstName);
+
+			if (result != null) {
+
+				for (Employee employee : result) {
+					System.out.print(employee.getEmployeeId() + ", ");
+					System.out.print(employee.getFirstName() + " ");
+					System.out.print(employee.getLastName() + ", ");
+					System.out.print(employee.getEmail() + ", ");
+					System.out.print(employee.getHireDate() + ", ");
+					System.out.println();
+				}
+			} else {
+				System.out.println("User not found!");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void getEmployeeByHireDate(String orderBy) {
+
+		if (orderBy == "ASC") {
+			getAllEmployeeByAscHireDate();
+		} else if (orderBy == "DESC") {
+			getAllEmployeeByDescHireDate();
+		}
+	}
+
+	public void getAllEmployeeByAscHireDate() {
+		List<Employee> result;
+		try {
+			result = employeeService.getAllEmployeeByAscHireDate();
+
+			for (Employee employee : result) {
+				System.out.print(employee.getEmployeeId() + ", ");
+				System.out.print(employee.getFirstName() + " ");
+				System.out.print(employee.getLastName() + ", ");
+				System.out.print(employee.getEmail() + ", ");
+				System.out.print(employee.getHireDate() + ", ");
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getAllEmployeeByDescHireDate() {
+		List<Employee> result;
+		try {
+			result = employeeService.getAllEmployeeByDescHireDate();
+
+			for (Employee employee : result) {
+				System.out.print(employee.getEmployeeId() + ", ");
+				System.out.print(employee.getFirstName() + " ");
+				System.out.print(employee.getLastName() + ", ");
+				System.out.print(employee.getEmail() + ", ");
+				System.out.print(employee.getHireDate() + ", ");
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void deleteEmployee() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter the Employee ID you want to delete:");
@@ -216,4 +301,57 @@ public class EmployeeController {
 		}
 	}
 
+	public void getNumberOfTotalEmployee() {
+		try {
+
+			int totalEmployee = employeeService.getNumberOfTotalEmployee();
+
+			System.out.println("The number of total employee :" + totalEmployee);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getAllEmployeeAvgHireDate() {
+		try {
+			String avgHireDate = employeeService.getAllEmployeeAvgHireDate();
+			System.out.println("The average hire date of all employee :" + avgHireDate);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateEmployeesSalaryByBatch() {
+         Object[][] employeesToUpdate = {{1,30000},{2,45000},{3,35000},{5,30000}};
+         try {
+        	 employeeService.updateEmployeesSalaryByBatch(employeesToUpdate);
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+	}
+	
+	public void employeeBackup() {
+		 try {
+        	 boolean result = employeeService.employeeBackup();
+        	 if(result) {
+                 System.out.println("Backup successful.");
+        	 }
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+	}
+	
+	public void restoreEmployee() {
+		 String backupFilePath = "D:/employee_backup.txt";
+		 try {
+        	 boolean result = employeeService.restoreEmployee(backupFilePath);
+        	 if(result) {
+                 System.out.println("Restore successfully.");
+        	 }
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+	}
 }
