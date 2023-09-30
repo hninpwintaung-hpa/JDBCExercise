@@ -35,8 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDAO.getEmployeesByFirstName(firstName);
 	}
 
-	public List<Employee> getAllEmployeeByAscHireDate() throws SQLException {
-		return employeeDAO.getAllEmployeeByAscHireDate();
+	public List<Employee> getAllEmployeeByHireDate(String orderBy) throws SQLException {
+		return employeeDAO.getAllEmployeeByHireDate(orderBy);
 	}
 
 	public List<Employee> getAllEmployeeByDescHireDate() throws SQLException {
@@ -58,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public String getAllEmployeeAvgHireDate() throws SQLException{
 		return employeeDAO.getAllEmployeeAvgHireDate();
 	}
-	public void updateEmployeesSalaryByBatch(Object[][] employeesToUpdate) throws SQLException{
+	public void updateEmployeesSalaryByBatch(List<Employee> employeesToUpdate) throws SQLException{
 		 employeeDAO.updateEmployeesSalaryByBatch(employeesToUpdate);
 	}
 	public Boolean employeeBackup()throws SQLException{

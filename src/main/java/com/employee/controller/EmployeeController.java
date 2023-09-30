@@ -32,40 +32,40 @@ public class EmployeeController {
 
 		// employeeController.deleteEmployee();
 
-		// employeeController.addEmployeeBatch();
+		  employeeController.addEmployeeBatch();
 
 		// employeeController.findEmployeeByFirstName("Ev");
 
 		// employeeController.getAllEmployeeByAscHireDate();
 
-		// employeeController.getEmployeeByHireDate("DESC");
+		// employeeController.getEmployeeByHireDate("ASC");
 
 		// employeeController.getNumberOfTotalEmployee();
 
 		///employeeController.getAllEmployeeAvgHireDate();
 		
-		//employeeController.updateEmployeesSalaryByBatch();
+		 employeeController.updateEmployeesSalaryByBatch();
 		 //employeeController.employeeBackup();
 		
-		employeeController.restoreEmployee();
+		//employeeController.restoreEmployee();
 	}
 
 	public void addEmployeeBatch() {
 		List<Employee> employeesToInsert = new ArrayList<>();
 
 		Employee alice = new Employee();
-		alice.setEmployeeId(3);
-		alice.setFirstName("alice");
+		alice.setEmployeeId(1);
+		alice.setFirstName("Olivia");
 		alice.setLastName("Johnson");
-		alice.setEmail("alice@gmail.com");
-		alice.setHireDate("2023-06-15");
+		alice.setEmail("olivia@gmail.com");
+		alice.setHireDate("2020-06-15");
 
 		Employee eve = new Employee();
-		eve.setEmployeeId(5);
-		eve.setFirstName("Eve");
-		eve.setLastName("Smith");
-		eve.setEmail("eve.smith@example.com");
-		eve.setHireDate("2022-12-05");
+		eve.setEmployeeId(2);
+		eve.setFirstName("Rosie");
+		eve.setLastName("William");
+		eve.setEmail("rosie@example.com");
+		eve.setHireDate("2021-12-05");
 
 		employeesToInsert.add(alice);
 		employeesToInsert.add(eve);
@@ -222,18 +222,9 @@ public class EmployeeController {
 	}
 
 	public void getEmployeeByHireDate(String orderBy) {
-
-		if (orderBy == "ASC") {
-			getAllEmployeeByAscHireDate();
-		} else if (orderBy == "DESC") {
-			getAllEmployeeByDescHireDate();
-		}
-	}
-
-	public void getAllEmployeeByAscHireDate() {
 		List<Employee> result;
 		try {
-			result = employeeService.getAllEmployeeByAscHireDate();
+			result = employeeService.getAllEmployeeByHireDate(orderBy);
 
 			for (Employee employee : result) {
 				System.out.print(employee.getEmployeeId() + ", ");
@@ -246,6 +237,7 @@ public class EmployeeController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void getAllEmployeeByDescHireDate() {
@@ -324,9 +316,21 @@ public class EmployeeController {
 	}
 
 	public void updateEmployeesSalaryByBatch() {
-         Object[][] employeesToUpdate = {{1,30000},{2,45000},{3,35000},{5,30000}};
+		List<Employee> employeeList = new ArrayList<>();
+		Employee employee1 = new Employee();
+		employee1.setEmployeeId(3);
+		employee1.setSalary(35000);
+		
+		Employee employee2 = new Employee();
+		employee2.setEmployeeId(5);
+		employee2.setSalary(30000);
+		
+		employeeList.add(employee1);
+		employeeList.add(employee2);
+		
+        // Object[][] employeesToUpdate = {{1,30000},{2,45000},{3,35000},{5,30000}};
          try {
-        	 employeeService.updateEmployeesSalaryByBatch(employeesToUpdate);
+        	 employeeService.updateEmployeesSalaryByBatch(employeeList);
          } catch (SQLException e) {
  			e.printStackTrace();
  		}

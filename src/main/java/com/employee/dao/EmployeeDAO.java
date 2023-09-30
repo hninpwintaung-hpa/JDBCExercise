@@ -20,7 +20,7 @@ public interface EmployeeDAO {
 	
 	public List<Employee> getEmployeesByFirstName(String firstName) throws SQLException;
 	
-	public List<Employee> getAllEmployeeByAscHireDate() throws SQLException;
+	public List<Employee> getAllEmployeeByHireDate(String orderBy) throws SQLException;
 	
 	public List<Employee> getAllEmployeeByDescHireDate() throws SQLException;
 
@@ -30,7 +30,7 @@ public interface EmployeeDAO {
 	
 	public String getAllEmployeeAvgHireDate()throws SQLException;
 	
-	public void updateEmployeesSalaryByBatch(Object[][] employeesToUpdate) throws SQLException;
+	public void updateEmployeesSalaryByBatch(List<Employee> employeesToUpdate) throws SQLException;
 	
 	public Boolean employeeBackup() throws SQLException;
 	

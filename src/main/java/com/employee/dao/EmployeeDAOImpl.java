@@ -24,7 +24,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public static String sqlUpdate = "update employee set first_name=?, last_name =? , email =?,salary =?, hire_date =? where employee_id =? ";
 	public static String sqlDelete = " delete from employee where employee_id =?";
 	public static String sqlSearchByFirstName = "select * from employee where first_name = ?";
-	public static String sqlSelectByAscDate = "select * from employee ORDER BY hire_date ASC";
+	public static String sqlSelectByDate = "SELECT * FROM employee ORDER BY " +
+            "CASE WHEN ? = 'ASC' THEN hire_date ELSE NULL END ASC, " +
+            "CASE WHEN ? = 'DESC' THEN hire_date ELSE NULL END DESC";
 	public static String sqlSelectByDescDate = "select * from employee ORDER BY hire_date DESC";
 	public static String sqlSelectCount = "select COUNT(*) from employee";
 	public static String sqlCalculateAvgHiredate = "Select DATEADD(DAY, AVG(DATEDIFF(DAY, '19000101', hire_date)), '19000101') from employee";
@@ -163,8 +165,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public List<Employee> getEmployeesByFirstName(String firstName) {
 
 		List<Employee> employeesList = new ArrayList<>();
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchByFirstName)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchByFirstName)) {
 
 			preparedStatement.setString(1, firstName);
 			ResultSet result = preparedStatement.executeQuery();
@@ -186,11 +187,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return employeesList;
 	}
 
-	public List<Employee> getAllEmployeeByAscHireDate() {
+	public List<Employee> getAllEmployeeByHireDate(String orderBy) {
 		List<Employee> employeesList = new ArrayList<>();
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByAscDate)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByDate)) {
 
+			preparedStatement.setString(1, orderBy);
+		    preparedStatement.setString(2, orderBy);
+			
 			ResultSet result = preparedStatement.executeQuery();
 
 			while (result.next()) {
@@ -213,8 +216,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	public List<Employee> getAllEmployeeByDescHireDate() {
 		List<Employee> employeesList = new ArrayList<>();
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByDescDate)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByDescDate)) {
 
 			ResultSet result = preparedStatement.executeQuery();
 
@@ -259,8 +261,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	public int getNumberOfTotalEmployee() {
 		int total = 0;
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectCount)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectCount)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				total = resultSet.getInt(1);
@@ -273,8 +274,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	public String getAllEmployeeAvgHireDate() {
 		String avgHireDate = "";
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlCalculateAvgHiredate)) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlCalculateAvgHiredate)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				avgHireDate = resultSet.getString(1);
@@ -285,15 +285,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return avgHireDate;
 	}
 
-	public void updateEmployeesSalaryByBatch(Object[][] employeesToUpdate) {
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlUpdateEmployeeSalary)) {
+	public void updateEmployeesSalaryByBatch(List<Employee> employeesToUpdate) {
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlUpdateEmployeeSalary)) {
 
-			for (Object[] employee : employeesToUpdate) {
-				int id = (int) employee[0];
-				int salary = (int) employee[1];
+			for (Employee employee : employeesToUpdate) {
+				int id = employee.getEmployeeId();
+				double salary = employee.getSalary();
 
-				preparedStatement.setLong(1, salary);
+				preparedStatement.setDouble(1, salary);
 				preparedStatement.setInt(2, id);
 
 				preparedStatement.addBatch();
@@ -308,8 +307,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Boolean employeeBackup() {
 		Boolean result = false;
 		String backupFilePath = "D:/employee_backup.txt";
-		try (Connection conn = DBConnection.getConnection();
-				PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectAll);
+		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectAll);
 				BufferedWriter writer = new BufferedWriter(new FileWriter(backupFilePath))) {
 
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -331,15 +329,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
-			result = false;
 		}
 		return result;
 	}
 
 	public Boolean restoreEmployee(String backupFilePath) {
 		Boolean result = false;
-		try (Connection conn = DBConnection.getConnection();
-				BufferedReader reader = new BufferedReader(new FileReader(backupFilePath))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(backupFilePath))) {
 
 			String line;
 			List<Employee> employeeList = new ArrayList<>();
@@ -364,9 +360,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			addEmployeeBatch(employeeList);
 			result = true;
 
-		} catch (SQLException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
-			result = false;
 		}
 		return result;
 	}
