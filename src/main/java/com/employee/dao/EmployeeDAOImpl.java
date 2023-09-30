@@ -41,7 +41,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 	}
 
-	public int[] addEmployeeBatch(List<Employee> employeesList) {
+	public int[] addEmployeeBatch(List<Employee> employeesList) throws SQLException{
 
 		int[] batchResult = null;
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
@@ -61,13 +61,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			batchResult = preparedStatement.executeBatch();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	        throw new SQLException(e);
+	        }
 		return batchResult;
 
 	}
 
-	public void addEmployee(Employee employee) {
+	public void addEmployee(Employee employee) throws SQLException{
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlInsert)) {
 
 			preparedStatement.setInt(1, employee.getEmployeeId());
@@ -79,11 +79,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 	}
 
-	public void updateEmployee(int empId, Employee employee) {
+	public void updateEmployee(int empId, Employee employee) throws SQLException{
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlUpdate)) {
 
 			preparedStatement.setString(1, employee.getFirstName());
@@ -96,22 +96,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 	}
 
-	public void deleteEmployee(int empId) {
+	public void deleteEmployee(int empId) throws SQLException{
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlDelete)) {
 
 			preparedStatement.setInt(1, empId);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 	}
 
-	public List<Employee> findAllEmployee() {
+	public List<Employee> findAllEmployee() throws SQLException{
 
 		List<Employee> employeesList = new ArrayList<>();
 
@@ -131,12 +131,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return employeesList;
 	}
 
-	public List<Employee> getEmployeesByLastName(String lastName) {
+	public List<Employee> getEmployeesByLastName(String lastName) throws SQLException{
 
 		List<Employee> employeesList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchByName)) {
@@ -156,12 +156,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return employeesList;
 	}
 
-	public List<Employee> getEmployeesByFirstName(String firstName) {
+	public List<Employee> getEmployeesByFirstName(String firstName) throws SQLException{
 
 		List<Employee> employeesList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchByFirstName)) {
@@ -181,12 +181,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return employeesList;
 	}
 
-	public List<Employee> getAllEmployeeByHireDate(String orderBy) {
+	public List<Employee> getAllEmployeeByHireDate(String orderBy) throws SQLException{
 		List<Employee> employeesList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByDate)) {
 
@@ -207,13 +207,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return employeesList;
 
 	}
 
-	public List<Employee> getAllEmployeeByDescHireDate() {
+	public List<Employee> getAllEmployeeByDescHireDate() throws SQLException{
 		List<Employee> employeesList = new ArrayList<>();
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByDescDate)) {
 
@@ -231,13 +231,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return employeesList;
 
 	}
 
-	public Employee getEmployeeById(int id) {
+	public Employee getEmployeeById(int id) throws SQLException{
 		Employee employee = new Employee();
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSearchById)) {
 
@@ -253,12 +253,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return employee;
 	}
 
-	public int getNumberOfTotalEmployee() {
+	public int getNumberOfTotalEmployee() throws SQLException{
 		int total = 0;
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectCount)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -266,12 +266,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				total = resultSet.getInt(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return total;
 	}
 
-	public String getAllEmployeeAvgHireDate() {
+	public String getAllEmployeeAvgHireDate() throws SQLException{
 		String avgHireDate = "";
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlCalculateAvgHiredate)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -279,12 +279,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				avgHireDate = resultSet.getString(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return avgHireDate;
 	}
 
-	public void updateEmployeesSalaryByBatch(List<Employee> employeesToUpdate) {
+	public void updateEmployeesSalaryByBatch(List<Employee> employeesToUpdate) throws SQLException{
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlUpdateEmployeeSalary)) {
 
 			for (Employee employee : employeesToUpdate) {
@@ -299,11 +299,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			preparedStatement.executeBatch();
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 	}
 
-	public Boolean employeeBackup() {
+	public Boolean employeeBackup() throws SQLException{
 		Boolean result = false;
 		String backupFilePath = "D:/employee_backup.txt";
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectAll);
@@ -327,12 +327,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			result = true;
 
 		} catch (SQLException | IOException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return result;
 	}
 
-	public Boolean restoreEmployee(String backupFilePath) {
+	public Boolean restoreEmployee(String backupFilePath) throws SQLException{
 		Boolean result = false;
 		try (BufferedReader reader = new BufferedReader(new FileReader(backupFilePath))) {
 
@@ -360,7 +360,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			result = true;
 
 		} catch (IOException e) {
-			e.printStackTrace();
+	        throw new SQLException(e);
 		}
 		return result;
 	}
