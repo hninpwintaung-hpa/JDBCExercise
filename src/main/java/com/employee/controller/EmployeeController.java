@@ -32,7 +32,7 @@ public class EmployeeController {
 
 		// employeeController.deleteEmployee();
 
-		  employeeController.addEmployeeBatch();
+		 // employeeController.addEmployeeBatch();
 
 		// employeeController.findEmployeeByFirstName("Ev");
 
@@ -328,7 +328,6 @@ public class EmployeeController {
 		employeeList.add(employee1);
 		employeeList.add(employee2);
 		
-        // Object[][] employeesToUpdate = {{1,30000},{2,45000},{3,35000},{5,30000}};
          try {
         	 employeeService.updateEmployeesSalaryByBatch(employeeList);
          } catch (SQLException e) {

@@ -24,15 +24,15 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public static String sqlUpdate = "update employee set first_name=?, last_name =? , email =?,salary =?, hire_date =? where employee_id =? ";
 	public static String sqlDelete = " delete from employee where employee_id =?";
 	public static String sqlSearchByFirstName = "select * from employee where first_name = ?";
-	public static String sqlSelectByDate = "SELECT * FROM employee ORDER BY " +
-            "CASE WHEN ? = 'ASC' THEN hire_date ELSE NULL END ASC, " +
-            "CASE WHEN ? = 'DESC' THEN hire_date ELSE NULL END DESC";
+	public static String sqlSelectByDate = "SELECT * FROM employee ORDER BY "
+			+ "CASE WHEN ? = 'ASC' THEN hire_date ELSE NULL END ASC, "
+			+ "CASE WHEN ? = 'DESC' THEN hire_date ELSE NULL END DESC";
 	public static String sqlSelectByDescDate = "select * from employee ORDER BY hire_date DESC";
 	public static String sqlSelectCount = "select COUNT(*) from employee";
 	public static String sqlCalculateAvgHiredate = "Select DATEADD(DAY, AVG(DATEDIFF(DAY, '19000101', hire_date)), '19000101') from employee";
 	public static String sqlUpdateEmployeeSalary = "update employee set salary = ? where employee_id =?";
 	private static Connection conn;
-	
+
 	static {
 		try {
 			conn = DBConnection.getConnection();
@@ -40,7 +40,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			e.printStackTrace();
 		}
 	}
-
 
 	public int[] addEmployeeBatch(List<Employee> employeesList) {
 
@@ -192,8 +191,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		try (PreparedStatement preparedStatement = conn.prepareStatement(sqlSelectByDate)) {
 
 			preparedStatement.setString(1, orderBy);
-		    preparedStatement.setString(2, orderBy);
-			
+			preparedStatement.setString(2, orderBy);
+
 			ResultSet result = preparedStatement.executeQuery();
 
 			while (result.next()) {
@@ -342,11 +341,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 			while ((line = reader.readLine()) != null) {
 				String[] values = line.split(",");
-				
-                 System.out.println("Lenght of values :"+values.length);
-                 
+
+				System.out.println("Lenght of values :" + values.length);
+
 				Employee employee = new Employee();
-				
+
 				employee.setEmployeeId(Integer.parseInt(values[0]));
 				employee.setFirstName(values[1]);
 				employee.setLastName(values[2]);
