@@ -31,11 +31,40 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeDAO.getEmployeesByLastName(lastName);
 	}
 
+	public List<Employee> getEmployeesByFirstName(String firstName) throws SQLException {
+		return employeeDAO.getEmployeesByFirstName(firstName);
+	}
+
+	public List<Employee> getAllEmployeeByHireDate(String orderBy) throws SQLException {
+		return employeeDAO.getAllEmployeeByHireDate(orderBy);
+	}
+
+	public List<Employee> getAllEmployeeByDescHireDate() throws SQLException {
+		return employeeDAO.getAllEmployeeByDescHireDate();
+	}
+
 	public void deleteEmployee(int empId) throws SQLException {
 		employeeDAO.deleteEmployee(empId);
 	}
 
 	public Employee getEmployeeById(int id) throws SQLException {
 		return employeeDAO.getEmployeeById(id);
+	}
+
+	public int getNumberOfTotalEmployee() throws SQLException{
+		return employeeDAO.getNumberOfTotalEmployee();
+	}
+	
+	public String getAllEmployeeAvgHireDate() throws SQLException{
+		return employeeDAO.getAllEmployeeAvgHireDate();
+	}
+	public void updateEmployeesSalaryByBatch(List<Employee> employeesToUpdate) throws SQLException{
+		 employeeDAO.updateEmployeesSalaryByBatch(employeesToUpdate);
+	}
+	public Boolean employeeBackup()throws SQLException{
+		return employeeDAO.employeeBackup();
+	}
+	public Boolean restoreEmployee(String backupFilePath) throws SQLException{
+		return employeeDAO.restoreEmployee(backupFilePath);
 	}
 }

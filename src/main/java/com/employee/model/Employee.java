@@ -7,6 +7,7 @@ public class Employee {
 	private String lastName;
 	private String email;
 	private String hireDate;
+	private double salary;
 
 	public int getEmployeeId() {
 		return employeeId;
@@ -46,5 +47,13 @@ public class Employee {
 
 	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
+	}
+
+	public double getSalary() {
+		return salary;
+	}
+
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
 }

@@ -24,7 +24,7 @@ public class EmployeeController {
 
 		// employeeController.addEmployee();
 
-		employeeController.findAllEmployee();
+		// employeeController.findAllEmployee();
 
 		// employeeController.findEmployeeByLastName("Kim");
 
@@ -32,25 +32,40 @@ public class EmployeeController {
 
 		// employeeController.deleteEmployee();
 
-		// employeeController.addEmployeeBatch();
+		 // employeeController.addEmployeeBatch();
+
+		// employeeController.findEmployeeByFirstName("Ev");
+
+		// employeeController.getAllEmployeeByAscHireDate();
+
+		// employeeController.getEmployeeByHireDate("ASC");
+
+		// employeeController.getNumberOfTotalEmployee();
+
+		///employeeController.getAllEmployeeAvgHireDate();
+		
+		 employeeController.updateEmployeesSalaryByBatch();
+		 //employeeController.employeeBackup();
+		
+		//employeeController.restoreEmployee();
 	}
 
 	public void addEmployeeBatch() {
 		List<Employee> employeesToInsert = new ArrayList<>();
 
 		Employee alice = new Employee();
-		alice.setEmployeeId(3);
-		alice.setFirstName("alice");
+		alice.setEmployeeId(1);
+		alice.setFirstName("Olivia");
 		alice.setLastName("Johnson");
-		alice.setEmail("alice@gmail.com");
-		alice.setHireDate("2023-06-15");
+		alice.setEmail("olivia@gmail.com");
+		alice.setHireDate("2020-06-15");
 
 		Employee eve = new Employee();
-		eve.setEmployeeId(5);
-		eve.setFirstName("Eve");
-		eve.setLastName("Smith");
-		eve.setEmail("eve.smith@example.com");
-		eve.setHireDate("2022-12-05");
+		eve.setEmployeeId(2);
+		eve.setFirstName("Rosie");
+		eve.setLastName("William");
+		eve.setEmail("rosie@example.com");
+		eve.setHireDate("2021-12-05");
 
 		employeesToInsert.add(alice);
 		employeesToInsert.add(eve);
@@ -181,6 +196,68 @@ public class EmployeeController {
 
 	}
 
+	public void findEmployeeByFirstName(String firstName) {
+		List<Employee> result;
+		try {
+			result = employeeService.getEmployeesByFirstName(firstName);
+
+			if (result != null) {
+
+				for (Employee employee : result) {
+					System.out.print(employee.getEmployeeId() + ", ");
+					System.out.print(employee.getFirstName() + " ");
+					System.out.print(employee.getLastName() + ", ");
+					System.out.print(employee.getEmail() + ", ");
+					System.out.print(employee.getHireDate() + ", ");
+					System.out.println();
+				}
+			} else {
+				System.out.println("User not found!");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void getEmployeeByHireDate(String orderBy) {
+		List<Employee> result;
+		try {
+			result = employeeService.getAllEmployeeByHireDate(orderBy);
+
+			for (Employee employee : result) {
+				System.out.print(employee.getEmployeeId() + ", ");
+				System.out.print(employee.getFirstName() + " ");
+				System.out.print(employee.getLastName() + ", ");
+				System.out.print(employee.getEmail() + ", ");
+				System.out.print(employee.getHireDate() + ", ");
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void getAllEmployeeByDescHireDate() {
+		List<Employee> result;
+		try {
+			result = employeeService.getAllEmployeeByDescHireDate();
+
+			for (Employee employee : result) {
+				System.out.print(employee.getEmployeeId() + ", ");
+				System.out.print(employee.getFirstName() + " ");
+				System.out.print(employee.getLastName() + ", ");
+				System.out.print(employee.getEmail() + ", ");
+				System.out.print(employee.getHireDate() + ", ");
+				System.out.println();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void deleteEmployee() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter the Employee ID you want to delete:");
@@ -216,4 +293,68 @@ public class EmployeeController {
 		}
 	}
 
+	public void getNumberOfTotalEmployee() {
+		try {
+
+			int totalEmployee = employeeService.getNumberOfTotalEmployee();
+
+			System.out.println("The number of total employee :" + totalEmployee);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getAllEmployeeAvgHireDate() {
+		try {
+			String avgHireDate = employeeService.getAllEmployeeAvgHireDate();
+			System.out.println("The average hire date of all employee :" + avgHireDate);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateEmployeesSalaryByBatch() {
+		List<Employee> employeeList = new ArrayList<>();
+		Employee employee1 = new Employee();
+		employee1.setEmployeeId(3);
+		employee1.setSalary(35000);
+		
+		Employee employee2 = new Employee();
+		employee2.setEmployeeId(5);
+		employee2.setSalary(30000);
+		
+		employeeList.add(employee1);
+		employeeList.add(employee2);
+		
+         try {
+        	 employeeService.updateEmployeesSalaryByBatch(employeeList);
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+	}
+	
+	public void employeeBackup() {
+		 try {
+        	 boolean result = employeeService.employeeBackup();
+        	 if(result) {
+                 System.out.println("Backup successful.");
+        	 }
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+	}
+	
+	public void restoreEmployee() {
+		 String backupFilePath = "D:/employee_backup.txt";
+		 try {
+        	 boolean result = employeeService.restoreEmployee(backupFilePath);
+        	 if(result) {
+                 System.out.println("Restore successfully.");
+        	 }
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}
+	}
 }
